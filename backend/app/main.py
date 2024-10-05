@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from .data_retrieval import load_sustainability_data, load_christmas_data
 
 app = FastAPI()
 
@@ -12,6 +13,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the RAG Survey Analysis Tool!"}
+@app.get("/sustainability")
+def get_sustainability_data():
+    data = load_sustainability_data()
+    return data.to_dict(orient='records')
+
+@app.get("/christmas")
+def get_christmas_data():
+    data = load_christmas_data()
+    return data.to_dict(orient='records')
